@@ -27,6 +27,8 @@ for STEM self-petitioners filing an EB-2 **National Interest Waiver**. Point it 
 your own materials and it researches, downloads, and assembles the forward-looking, fully-sourced
 national-importance record the petition is built on.
 
+**For complete product, please visit [NIW Guru](https://niwguru.com/).**
+
 ```bash
 niw-guru -s ~/my_niw_materials
 ```
