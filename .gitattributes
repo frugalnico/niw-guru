@@ -1,0 +1,12 @@
+# Normalize line endings. Shell scripts MUST stay LF — CRLF breaks the shebang.
+* text=auto eol=lf
+*.sh   text eol=lf
+bin/niw-guru text eol=lf
+
+# Treat these as binary (no EOL munging, no diff noise).
+*.pdf  binary
+*.png  binary
+*.jpg  binary
+
+# GitHub language stats: count the example profile as docs, not source.
+examples/** linguist-documentation

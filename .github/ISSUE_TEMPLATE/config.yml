@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security or privacy report
+    url: https://github.com/<your-username>/niw-guru/security/advisories/new
+    about: "Please report vulnerabilities privately — see SECURITY.md. Do not open a public issue."
+  - name: Question / discussion
+    url: https://github.com/<your-username>/niw-guru/discussions
+    about: Ask usage questions or share ideas (enable Discussions on the repo first).
+  - name: Read the disclaimer first
+    url: https://github.com/<your-username>/niw-guru/blob/main/DISCLAIMER.md
+    about: niw-guru produces drafts, not legal advice. Have an attorney review before filing.

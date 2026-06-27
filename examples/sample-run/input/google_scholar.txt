@@ -1,0 +1,5 @@
+FICTIONAL sample — Google Scholar profile URL would go here, e.g.:
+https://scholar.google.com/citations?user=EXAMPLE_ID
+
+(In a real run, paste your actual Scholar profile URL here, or export the page
+as PDF/HTML into your evidence folder. niw-guru will read it during Stage 1.)

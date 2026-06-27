@@ -1,0 +1,28 @@
+# Built command — generated from src/niw-guru.in by `make build` (see INSTALL.md). Not committed.
+bin/niw-guru
+!bin/.gitkeep
+
+# Runtime output — each run lands in output/<run-name>/. Keep the folder, ignore contents.
+output/*
+!output/.gitkeep
+
+# OS / editor cruft
+.DS_Store
+*~
+*.swp
+
+# Local-only Claude state
+.claude/settings.local.json
+.claude/.last_run
+
+# Skills are installed by setup.sh (cloned from upstream), not committed — EXCEPT the two
+# authored here. Ignore everything under .claude/skills/, then un-ignore the authored skills.
+# (To vendor the upstream skills into the repo instead, delete this whole block.)
+.claude/skills/*
+!.claude/skills/niw-federal-evidence-harvester
+!.claude/skills/niw-federal-evidence-harvester/**
+!.claude/skills/niw-future-endeavors
+!.claude/skills/niw-future-endeavors/**
+
+# Temp clone dir used by setup.sh
+.upstream-skills/

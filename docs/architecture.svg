@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 700" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif" role="img" aria-label="niw-guru pipeline diagram">
+  <title>niw-guru pipeline: one command turns your materials into a sourced NIW evidence package</title>
+
+  <!-- title -->
+  <text x="380" y="44" text-anchor="middle" font-size="30" font-weight="700" fill="#4F46E5">niw-guru</text>
+  <text x="380" y="70" text-anchor="middle" font-size="14" fill="#6B7280">one command → a fully-sourced EB-2 NIW evidence package</text>
+
+  <!-- input -->
+  <rect x="180" y="92" width="400" height="58" rx="10" fill="#ECFDF5" stroke="#10B981" stroke-width="1.5"/>
+  <text x="380" y="116" text-anchor="middle" font-size="13" font-weight="700" fill="#065F46">Your evidence folder  (read-only)</text>
+  <text x="380" y="135" text-anchor="middle" font-size="12" fill="#047857">CV · publication list · Google Scholar · prior statements</text>
+
+  <!-- arrow -->
+  <line x1="380" y1="150" x2="380" y2="176" stroke="#9CA3AF" stroke-width="2"/>
+  <polygon points="374,176 386,176 380,184" fill="#9CA3AF"/>
+
+  <!-- launcher -->
+  <rect x="180" y="186" width="400" height="56" rx="10" fill="#EEF2FF" stroke="#6366F1" stroke-width="1.5"/>
+  <text x="380" y="209" text-anchor="middle" font-size="13" font-weight="700" fill="#3730A3">bin/niw-guru  →  claude -p  (headless)</text>
+  <text x="380" y="227" text-anchor="middle" font-size="12" fill="#4338CA">orchestrator: .claude/commands/niw-run.md</text>
+
+  <!-- arrow -->
+  <line x1="380" y1="242" x2="380" y2="268" stroke="#9CA3AF" stroke-width="2"/>
+  <polygon points="374,268 386,268 380,276" fill="#9CA3AF"/>
+
+  <!-- pipeline container -->
+  <rect x="150" y="278" width="460" height="220" rx="12" fill="#ECFEFF" stroke="#06B6D4" stroke-width="1.5"/>
+  <text x="380" y="300" text-anchor="middle" font-size="13" font-weight="700" fill="#155E75">Pipeline — five stages (Claude Code skills)</text>
+
+  <line x1="166" y1="312" x2="594" y2="312" stroke="#CFFAFE" stroke-width="1"/>
+  <text x="176" y="334" font-size="12.5" fill="#0E7490"><tspan font-weight="700">①  Profile</tspan>            ·  document-summary-arrangement</text>
+  <line x1="166" y1="346" x2="594" y2="346" stroke="#CFFAFE" stroke-width="1"/>
+  <text x="176" y="368" font-size="12.5" fill="#0E7490"><tspan font-weight="700">②  Source research</tspan>  ·  niw-national-importance-research</text>
+  <line x1="166" y1="380" x2="594" y2="380" stroke="#CFFAFE" stroke-width="1"/>
+  <text x="176" y="402" font-size="12.5" fill="#0E7490"><tspan font-weight="700">③  Harvest + quote</tspan>  ·  niw-federal-evidence-harvester <tspan fill="#9333EA">(new)</tspan></text>
+  <line x1="166" y1="414" x2="594" y2="414" stroke="#CFFAFE" stroke-width="1"/>
+  <text x="176" y="436" font-size="12.5" fill="#0E7490"><tspan font-weight="700">④  Future endeavors</tspan> ·  niw-future-endeavors <tspan fill="#9333EA">(new)</tspan></text>
+  <line x1="166" y1="448" x2="594" y2="448" stroke="#CFFAFE" stroke-width="1"/>
+  <text x="176" y="470" font-size="12.5" fill="#0E7490"><tspan font-weight="700">⑤  Summary + gaps</tspan>  ·  RUN_SUMMARY.md ([VERIFY] list)</text>
+
+  <!-- distribution bus to outputs -->
+  <line x1="380" y1="498" x2="380" y2="522" stroke="#9CA3AF" stroke-width="2"/>
+  <line x1="137" y1="522" x2="623" y2="522" stroke="#9CA3AF" stroke-width="2"/>
+  <line x1="137" y1="522" x2="137" y2="556" stroke="#9CA3AF" stroke-width="2"/>
+  <polygon points="131,556 143,556 137,564" fill="#9CA3AF"/>
+  <line x1="380" y1="522" x2="380" y2="556" stroke="#9CA3AF" stroke-width="2"/>
+  <polygon points="374,556 386,556 380,564" fill="#9CA3AF"/>
+  <line x1="623" y1="522" x2="623" y2="556" stroke="#9CA3AF" stroke-width="2"/>
+  <polygon points="617,556 629,556 623,564" fill="#9CA3AF"/>
+
+  <!-- outputs -->
+  <rect x="24" y="566" width="226" height="62" rx="10" fill="#FFFBEB" stroke="#F59E0B" stroke-width="1.5"/>
+  <text x="137" y="590" text-anchor="middle" font-size="12.5" font-weight="700" fill="#92400E">federal_documents/*.pdf</text>
+  <text x="137" y="608" text-anchor="middle" font-size="11" fill="#B45309">downloaded gov / WH / media PDFs</text>
+
+  <rect x="267" y="566" width="226" height="62" rx="10" fill="#FFFBEB" stroke="#F59E0B" stroke-width="1.5"/>
+  <text x="380" y="590" text-anchor="middle" font-size="12.5" font-weight="700" fill="#92400E">national_importance_quotes.md</text>
+  <text x="380" y="608" text-anchor="middle" font-size="11" fill="#B45309">quotes + page + connection to you</text>
+
+  <rect x="510" y="566" width="226" height="62" rx="10" fill="#FFFBEB" stroke="#F59E0B" stroke-width="1.5"/>
+  <text x="623" y="590" text-anchor="middle" font-size="12.5" font-weight="700" fill="#92400E">future_endeavors.md</text>
+  <text x="623" y="608" text-anchor="middle" font-size="11" fill="#B45309">3–5 endeavors + concrete plans</text>
+
+  <!-- footer -->
+  <text x="380" y="664" text-anchor="middle" font-size="12" fill="#6B7280">read-only source  ·  zero unverified claims  ·  drafts &amp; research aids, not legal advice</text>
+</svg>

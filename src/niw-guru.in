@@ -1,0 +1,234 @@
+#!/usr/bin/env bash
+#
+# niw-guru — one-command EB-2 NIW evidence agent.   << SOURCE TEMPLATE >>
+#
+# This is the SOURCE for the `niw-guru` command. It is not meant to be run as-is:
+# build it first (see INSTALL.md). The build step substitutes @NIW_GURU_HOME@ below
+# with this project's absolute path and writes the runnable command to bin/niw-guru:
+#
+#       make build                 # -> bin/niw-guru
+#       make install               # -> symlink onto your PATH (optional)
+#   or manually:
+#       sed "s|@NIW_GURU_HOME@|$(pwd)|g" src/niw-guru.in > bin/niw-guru && chmod +x bin/niw-guru
+#
+#   niw-guru -s <evidence_dir> [-o <out_dir>] [-n <run_name>] [--yes] [--dry-run] [-h]
+#
+# Points Claude Code at a folder of your materials (CV, publication list,
+# Google Scholar export, etc.) and runs the full pipeline, producing:
+#   <run>/federal_documents/*.pdf        downloaded gov / White House / media docs
+#   <run>/national_importance_quotes.md  exact quotes + page locations + how each ties to you
+#   <run>/future_endeavors.md            3-5 concrete future endeavors w/ implementation plans
+#
+# The engine is the `claude` CLI driving the skills in .claude/skills and the
+# orchestrator in .claude/commands/niw-run.md.
+
+set -euo pipefail
+
+# ---------------------------------------------------------------------------
+# Locate the niw-guru project root.
+#   `make build` bakes the absolute path into @NIW_GURU_HOME@ below. If this file
+#   is run unbuilt (placeholder intact) or the baked path no longer exists, fall
+#   back to resolving from the script's own location (symlink-aware). Override at
+#   any time with the NIW_GURU_HOME environment variable.
+# ---------------------------------------------------------------------------
+NIW_GURU_HOME="${NIW_GURU_HOME:-@NIW_GURU_HOME@}"
+if [[ "$NIW_GURU_HOME" == "@NIW_GURU_HOME@" || ! -d "$NIW_GURU_HOME" ]]; then
+  _src="${BASH_SOURCE[0]}"
+  while [ -h "$_src" ]; do
+    _dir="$(cd -P "$(dirname "$_src")" >/dev/null 2>&1 && pwd)"
+    _src="$(readlink "$_src")"
+    [[ "$_src" != /* ]] && _src="$_dir/$_src"
+  done
+  NIW_GURU_HOME="$(cd -P "$(dirname "$_src")/.." >/dev/null 2>&1 && pwd)"
+fi
+PROJECT_ROOT="$NIW_GURU_HOME"
+
+# ---------------------------------------------------------------------------
+# Defaults & arg parsing
+# ---------------------------------------------------------------------------
+SRC=""
+OUT_DIR="$PROJECT_ROOT/output"
+RUN_NAME=""
+ASSUME_YES=0
+DRY_RUN=0
+
+usage() {
+  cat <<'EOF'
+niw-guru — one-command EB-2 NIW evidence agent
+
+USAGE
+  niw-guru -s <evidence_dir> [options]
+
+REQUIRED
+  -s, --source <dir>   Folder of YOUR materials: CV, publication list, Google
+                       Scholar export (PDF/HTML/links), prior statements, etc.
+                       This folder is read-only input; niw-guru never edits it.
+
+OPTIONS
+  -o, --output <dir>   Where runs are written        (default: <project>/output)
+  -n, --name <name>    Name for this run's subfolder  (default: <src>-<timestamp>)
+      --yes            Fully unattended: skip all permission prompts
+                       (passes --dangerously-skip-permissions to claude).
+      --dry-run        Print what would run, then exit. No Claude call.
+  -h, --help           Show this help.
+
+OUTPUT (in <output>/<name>/)
+  federal_documents/*.pdf          downloaded government / White House / media PDFs
+  national_importance_quotes.md    quotes + PDF page locations + connection to you
+  future_endeavors.md              3-5 future endeavors with concrete plans
+  RUN_SUMMARY.md                   what ran, what was found, and gaps to verify
+
+EXAMPLES
+  niw-guru -s ~/my_niw_materials
+  niw-guru -s ./examples/sample-run/input -o /tmp/niw-smoke --yes
+
+First time? See INSTALL.md: run ./setup.sh (PDF tools + immigration skills),
+then build the command with `make build` (or the manual step in INSTALL.md).
+EOF
+}
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    -s|--source) SRC="${2:-}"; shift 2 ;;
+    -o|--output) OUT_DIR="${2:-}"; shift 2 ;;
+    -n|--name)   RUN_NAME="${2:-}"; shift 2 ;;
+    --yes|-y)    ASSUME_YES=1; shift ;;
+    --dry-run)   DRY_RUN=1; shift ;;
+    -h|--help)   usage; exit 0 ;;
+    *) echo "niw-guru: unknown argument: $1" >&2; echo "Try 'niw-guru --help'." >&2; exit 2 ;;
+  esac
+done
+
+err() { echo "niw-guru: $*" >&2; }
+
+# ---------------------------------------------------------------------------
+# Pre-flight checks
+# ---------------------------------------------------------------------------
+if [[ -z "$SRC" ]]; then
+  err "missing required -s/--source <evidence_dir>"
+  echo "Try 'niw-guru --help'." >&2
+  exit 2
+fi
+
+if ! command -v claude >/dev/null 2>&1; then
+  err "the 'claude' CLI was not found on your PATH."
+  err "Install Claude Code: https://docs.anthropic.com/en/docs/claude-code  (npm i -g @anthropic-ai/claude-code)"
+  exit 127
+fi
+
+if [[ ! -d "$SRC" ]]; then
+  err "source is not a directory: $SRC"
+  exit 1
+fi
+SRC="$(cd -P "$SRC" >/dev/null 2>&1 && pwd)"   # absolutize
+if [[ -z "$(ls -A "$SRC" 2>/dev/null)" ]]; then
+  err "source directory is empty: $SRC"
+  err "Put your CV, publication list, Google Scholar export, etc. in there first."
+  exit 1
+fi
+
+# Soft dependency check — warn (don't fail) if PDF tooling is missing.
+MISSING=""
+command -v pdftotext >/dev/null 2>&1 || MISSING="$MISSING pdftotext"
+if [[ -n "$MISSING" ]]; then
+  err "warning: missing tools:$MISSING — PDF text/page extraction may be degraded."
+  err "         run ./setup.sh to install them."
+fi
+
+# ---------------------------------------------------------------------------
+# Compute the run directory
+# ---------------------------------------------------------------------------
+if [[ -z "$RUN_NAME" ]]; then
+  RUN_NAME="$(basename "$SRC")-$(date +%Y%m%d-%H%M%S)"
+fi
+RUN_DIR="$OUT_DIR/$RUN_NAME"
+
+# ---------------------------------------------------------------------------
+# Build the orchestration prompt
+# ---------------------------------------------------------------------------
+read -r -d '' PROMPT <<EOF || true
+You are niw-guru. Execute the full NIW evidence pipeline defined in
+.claude/commands/niw-run.md (read that file now and follow every stage to completion).
+
+Run parameters for THIS run:
+  SOURCE_DIR = $SRC
+  RUN_DIR    = $RUN_DIR
+
+SOURCE_DIR is read-only input (the petitioner's supplied materials). Never modify
+anything inside SOURCE_DIR. Write every output under RUN_DIR. The same two values
+are also saved in $RUN_DIR/.niw-run.env if you need to re-read them.
+
+Work autonomously to completion without asking the user questions; make reasonable,
+clearly-stated assumptions when information is missing and record them in
+RUN_SUMMARY.md. The run is complete only when all three deliverables exist under
+RUN_DIR: federal_documents/ (with downloaded PDFs), national_importance_quotes.md,
+and future_endeavors.md, plus RUN_SUMMARY.md.
+EOF
+
+# ---------------------------------------------------------------------------
+# Dry run?
+# ---------------------------------------------------------------------------
+echo "niw-guru"
+echo "  project : $PROJECT_ROOT"
+echo "  source  : $SRC"
+echo "  run dir : $RUN_DIR"
+echo "  mode    : $([[ $ASSUME_YES -eq 1 ]] && echo 'unattended (--yes, skips all permission checks)' || echo 'autonomous (scoped tool allowlist)')"
+echo ""
+
+if [[ $DRY_RUN -eq 1 ]]; then
+  echo "[dry-run] would create $RUN_DIR and invoke the claude pipeline. Exiting."
+  exit 0
+fi
+
+# ---------------------------------------------------------------------------
+# Create the run dir + env file, then launch Claude Code
+# ---------------------------------------------------------------------------
+mkdir -p "$RUN_DIR/federal_documents"
+{
+  echo "SOURCE_DIR=$SRC"
+  echo "RUN_DIR=$RUN_DIR"
+  echo "PROJECT_ROOT=$PROJECT_ROOT"
+  echo "STARTED=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+} > "$RUN_DIR/.niw-run.env"
+
+# Permission strategy:
+#   --yes  -> fully unattended (skip permission checks entirely)
+#   else   -> scoped allowlist + auto-accept edits (the tools the pipeline needs)
+PERM_ARGS=()
+if [[ $ASSUME_YES -eq 1 ]]; then
+  PERM_ARGS+=(--dangerously-skip-permissions)
+else
+  PERM_ARGS+=(--permission-mode acceptEdits
+              --allowedTools "Read,Write,Edit,Glob,Grep,Bash,WebSearch,WebFetch,Task,TodoWrite")
+fi
+
+echo "==> launching Claude Code pipeline (this can take a while: web research + downloads)…"
+echo ""
+
+set +e
+( cd "$PROJECT_ROOT" && claude -p "$PROMPT" \
+    --add-dir "$SRC" \
+    --add-dir "$RUN_DIR" \
+    "${PERM_ARGS[@]}" \
+    --verbose )
+STATUS=$?
+set -e
+
+echo ""
+echo "==============================================================="
+if [[ $STATUS -ne 0 ]]; then
+  err "claude exited with status $STATUS — the run may be incomplete. See output below."
+fi
+echo "Run directory: $RUN_DIR"
+for f in "national_importance_quotes.md" "future_endeavors.md" "RUN_SUMMARY.md"; do
+  if [[ -f "$RUN_DIR/$f" ]]; then echo "  ✓ $f"; else echo "  ✗ $f  (missing)"; fi
+done
+if [[ -d "$RUN_DIR/federal_documents" ]]; then
+  n=$(find "$RUN_DIR/federal_documents" -type f \( -iname '*.pdf' -o -iname '*.txt' \) 2>/dev/null | wc -l | tr -d ' ')
+  echo "  • federal_documents/: $n file(s) downloaded"
+fi
+echo "==============================================================="
+echo "Reminder: niw-guru produces drafts and research aids, not legal advice."
+echo "Have a licensed immigration attorney review your petition before filing."
+
+exit $STATUS

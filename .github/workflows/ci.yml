@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    name: Offline test suite
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install tools (poppler, shellcheck, renderer)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y poppler-utils shellcheck wkhtmltopdf
+
+      - name: Build the launcher from source
+        run: make build
+
+      - name: Run tests
+        run: make test
+
+  shellcheck:
+    name: ShellCheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run shellcheck
+        run: |
+          sudo apt-get update && sudo apt-get install -y shellcheck
+          # Lint the launcher, setup, tests, and helper scripts.
+          find . -path ./.git -prune -o -name '*.sh' -print -exec shellcheck -S warning {} +
+          shellcheck -S warning bin/niw-guru
