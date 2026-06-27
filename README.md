@@ -10,6 +10,8 @@
 [![Status: beta](https://img.shields.io/badge/status-beta-orange)](CHANGELOG.md)
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-brightgreen)](CONTRIBUTING.md)
 
+<img src="docs/guru.png" alt="NIW guru" width="640">
+
 <img src="docs/architecture.svg" alt="niw-guru pipeline" width="640">
 
 </div>
