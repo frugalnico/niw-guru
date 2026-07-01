@@ -245,6 +245,5 @@ niw-guru does not create an attorney–client relationship. Full text: [`DISCLAI
 ## License & acknowledgments
 
 [MIT](LICENSE). Built on the
-[`claude_immigration_attorney`](https://github.com/juntoku9/claude_immigration_attorney) skills,
-and structured after the one-command [LeWRON](https://github.com/quarkquartet/LeWRON) agent.
+[`claude_immigration_attorney`](https://github.com/juntoku9/claude_immigration_attorney) skills.
 niw-guru is an independent project and is not affiliated with USCIS or any government agency.
