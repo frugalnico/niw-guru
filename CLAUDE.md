@@ -21,6 +21,9 @@ pipeline interactively with `/niw-run <source_dir> <run_dir>`.
    location and a written explanation of how it connects to the user's background/endeavor.
 3. **`future_endeavors.md`** — 3–5 concrete future endeavors with implementation plans, each
    tied to the user's expertise *and* the national-interest evidence.
+4. **`partial_petition_letter_draft.md`** — the three files above woven into the connective core
+   of the petition letter: background → national importance → how each endeavor advances the
+   specific harvested evidence (Dhanasar Prongs 1–3). A partial draft, not a filing-ready letter.
 Plus `RUN_SUMMARY.md` (what ran, what was found, and everything to verify before filing).
 
 ## Hard rules
@@ -44,7 +47,9 @@ Plus `RUN_SUMMARY.md` (what ran, what was found, and everything to verify before
 3. **Harvest & quote** — `niw-federal-evidence-harvester` downloads PDFs + builds
    `national_importance_quotes.md`.
 4. **Future endeavors** — `niw-future-endeavors` → `future_endeavors.md`.
-5. **Summary & gaps** — `RUN_SUMMARY.md`.
+5. **Partial petition letter** — synthesize the three deliverables →
+   `partial_petition_letter_draft.md`.
+6. **Summary & gaps** — `RUN_SUMMARY.md`.
 
 ## Knowledge base (`knowledge/`)
 Read before drafting/assessing: `overview-niw.md` (Dhanasar prongs), `prongs/01–03`,

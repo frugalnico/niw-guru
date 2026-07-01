@@ -1,7 +1,7 @@
 # How it works
 
 niw-guru is a Claude Code agent. The `niw-guru` command is a thin launcher; the real work is a
-five-stage pipeline defined in [`.claude/commands/niw-run.md`](../.claude/commands/niw-run.md) and
+six-stage pipeline defined in [`.claude/commands/niw-run.md`](../.claude/commands/niw-run.md) and
 carried out by skills in [`.claude/skills/`](../.claude/skills).
 
 ## The launcher (`bin/niw-guru`)
@@ -31,7 +31,7 @@ For that to run unattended, the tools must be pre-approved:
 - **`--yes` (unrestricted):** the launcher passes `--dangerously-skip-permissions` so nothing is
   ever denied. Use this on your own machine with your own data for the most hands-off run.
 
-## The stages (five, plus a finish step)
+## The stages (six, plus a finish step)
 
 | # | Stage | Skill | Writes |
 |---|-------|-------|--------|
@@ -39,7 +39,8 @@ For that to run unattended, the tools must be pre-approved:
 | 2 | Source research | `niw-national-importance-research` | `national_importance_research.md` |
 | 3 | Harvest & quote | **`niw-federal-evidence-harvester`** | `federal_documents/*.pdf`, `national_importance_quotes.md` |
 | 4 | Future endeavors | **`niw-future-endeavors`** | `future_endeavors.md` |
-| 5 | Summary & gaps | (orchestrator) | `RUN_SUMMARY.md` |
+| 5 | Partial petition letter | (orchestrator) | `partial_petition_letter_draft.md` |
+| 6 | Summary & gaps | (orchestrator) | `RUN_SUMMARY.md` |
 
 **Stage 1 — Profile.** Scans and reads your materials, builds an evidence index, and distills a
 profile: field, sub-fields, the methods/instruments you personally command, your key results
@@ -65,7 +66,15 @@ technical approach, sub-aims, milestones (Yr 1–2 / 3–4 / 5+), why you're wel
 national-interest alignment that cites specific harvested sources by file + page. Ends with a
 Dhanasar Prong 1/2 mapping and a recommended lead endeavor.
 
-**Stage 5 — Summary.** `RUN_SUMMARY.md`: counts, assumptions made, gaps to fill, and the full
+**Stage 5 — Partial petition letter.** Synthesizes (does not re-research) the three prior
+deliverables into **`partial_petition_letter_draft.md`** — the connective core of the petition
+letter: who you are → why the endeavor is nationally important (weaving in the exact, page-located
+quotes from Stage 3) → a connection matrix mapping each proposed endeavor to the specific
+harvested evidence it advances (Dhanasar Prongs 1–3). It introduces no new quote, page, or source;
+it's a *partial* draft (the substantive argument, not a filing-ready letter), and it carries every
+`[VERIFY]` forward.
+
+**Stage 6 — Summary.** `RUN_SUMMARY.md`: counts, assumptions made, gaps to fill, and the full
 `[VERIFY]` list.
 
 ## Design guarantees

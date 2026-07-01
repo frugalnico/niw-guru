@@ -10,6 +10,7 @@ output/<run-name>/
 │   └── …
 ├── national_importance_quotes.md     # deliverable #1+#2: the quote bank
 ├── future_endeavors.md               # deliverable #3: 3–5 proposed endeavors
+├── partial_petition_letter_draft.md  # deliverable #4: the three above, woven into the letter core
 ├── petitioner_profile.md             # intermediate: who you are, from your materials
 ├── evidence-index.md                 # intermediate: index of your supplied materials
 ├── national_importance_research.md   # intermediate: ranked candidate sources
@@ -51,6 +52,21 @@ national-interest alignment citing harvested sources by file + page (Prong 1). I
 Dhanasar mapping table and a recommended lead endeavor. See the template in
 [`templates/future_endeavors.template.md`](../templates/future_endeavors.template.md).
 
+## `partial_petition_letter_draft.md`
+
+The connective **core of the petition letter**, synthesized from the three deliverables above —
+`petitioner_profile.md`, `national_importance_quotes.md`, and `future_endeavors.md`. It runs:
+(I) the petitioner and the proposed endeavor; (II) substantial merit & national importance
+(Prong 1), weaving in the exact, page-located quotes from the quote bank; (III) why the
+petitioner is well positioned (Prong 2); (IV) a **connection matrix** mapping each proposed
+endeavor to the specific harvested evidence (source + local file + PDF page) it advances — the
+crux the whole run builds toward; and (V) a brief Prong-3 balancing note. It introduces no quote,
+page, or source not already in the three source files, and carries every `[VERIFY]` forward.
+
+It is a **partial** draft — the substantive argument, not a filing-ready letter: no caption, no
+exhibit list, no full Prong-3 brief. An attorney completes those. See the template in
+[`templates/partial_petition_letter_draft.template.md`](../templates/partial_petition_letter_draft.template.md).
+
 ## `RUN_SUMMARY.md`
 
 Read this first. It contains the petitioner profile in brief, download/quote/endeavor counts,
@@ -59,6 +75,8 @@ still fill, and the consolidated `[VERIFY]` list.
 
 ## Using the output
 
-These files are **drafts and research aids**. The quote bank feeds a petition letter (try the
-`niw-petition-narrative` skill); the endeavors become your proposed-endeavor statement. Confirm
-every `[VERIFY]` item, then have a licensed immigration attorney review everything before filing.
+These files are **drafts and research aids**. `partial_petition_letter_draft.md` already stitches
+the quote bank and endeavors into the letter's substantive core; extend it into a full letter
+(the `niw-petition-narrative` skill helps), and the endeavors become your proposed-endeavor
+statement. Confirm every `[VERIFY]` item, then have a licensed immigration attorney review
+everything before filing.
