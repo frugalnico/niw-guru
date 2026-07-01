@@ -15,9 +15,10 @@
 #
 # Points Claude Code at a folder of your materials (CV, publication list,
 # Google Scholar export, etc.) and runs the full pipeline, producing:
-#   <run>/federal_documents/*.pdf        downloaded gov / White House / media docs
-#   <run>/national_importance_quotes.md  exact quotes + page locations + how each ties to you
-#   <run>/future_endeavors.md            3-5 concrete future endeavors w/ implementation plans
+#   <run>/federal_documents/*.pdf           downloaded gov / White House / media docs
+#   <run>/national_importance_quotes.md     exact quotes + page locations + how each ties to you
+#   <run>/future_endeavors.md               3-5 concrete future endeavors w/ implementation plans
+#   <run>/partial_petition_letter_draft.md  the three above, woven into the petition-letter core
 #
 # The engine is the `claude` CLI driving the skills in .claude/skills and the
 # orchestrator in .claude/commands/niw-run.md.
@@ -73,10 +74,11 @@ OPTIONS
   -h, --help           Show this help.
 
 OUTPUT (in <output>/<name>/)
-  federal_documents/*.pdf          downloaded government / White House / media PDFs
-  national_importance_quotes.md    quotes + PDF page locations + connection to you
-  future_endeavors.md              3-5 future endeavors with concrete plans
-  RUN_SUMMARY.md                   what ran, what was found, and gaps to verify
+  federal_documents/*.pdf            downloaded government / White House / media PDFs
+  national_importance_quotes.md      quotes + PDF page locations + connection to you
+  future_endeavors.md                3-5 future endeavors with concrete plans
+  partial_petition_letter_draft.md   the three above woven into the petition-letter core
+  RUN_SUMMARY.md                     what ran, what was found, and gaps to verify
 
 EXAMPLES
   niw-guru -s ~/my_niw_materials
@@ -160,9 +162,9 @@ are also saved in $RUN_DIR/.niw-run.env if you need to re-read them.
 
 Work autonomously to completion without asking the user questions; make reasonable,
 clearly-stated assumptions when information is missing and record them in
-RUN_SUMMARY.md. The run is complete only when all three deliverables exist under
+RUN_SUMMARY.md. The run is complete only when all four deliverables exist under
 RUN_DIR: federal_documents/ (with downloaded PDFs), national_importance_quotes.md,
-and future_endeavors.md, plus RUN_SUMMARY.md.
+future_endeavors.md, and partial_petition_letter_draft.md, plus RUN_SUMMARY.md.
 EOF
 
 # ---------------------------------------------------------------------------
@@ -220,7 +222,7 @@ if [[ $STATUS -ne 0 ]]; then
   err "claude exited with status $STATUS — the run may be incomplete. See output below."
 fi
 echo "Run directory: $RUN_DIR"
-for f in "national_importance_quotes.md" "future_endeavors.md" "RUN_SUMMARY.md"; do
+for f in "national_importance_quotes.md" "future_endeavors.md" "partial_petition_letter_draft.md" "RUN_SUMMARY.md"; do
   if [[ -f "$RUN_DIR/$f" ]]; then echo "  ✓ $f"; else echo "  ✗ $f  (missing)"; fi
 done
 if [[ -d "$RUN_DIR/federal_documents" ]]; then

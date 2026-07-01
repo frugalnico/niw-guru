@@ -39,7 +39,7 @@ from source — edit [`src/niw-guru.in`](src/niw-guru.in), not the generated `bi
 |---|---|
 | `src/niw-guru.in` | The launcher **source** (built into `bin/niw-guru`). Parses args, pre-flights, drives `claude -p`. |
 | `Makefile` | Build/install: `make build`, `make install`, `make test`, `make clean`. |
-| `.claude/commands/niw-run.md` | The orchestrator — the five-stage pipeline playbook. |
+| `.claude/commands/niw-run.md` | The orchestrator — the six-stage pipeline playbook. |
 | `.claude/skills/niw-federal-evidence-harvester/` | **Authored here.** Search → download PDFs → page-located quotes. |
 | `.claude/skills/niw-future-endeavors/` | **Authored here.** Propose 3–5 endeavors. |
 | `.claude/skills/<others>/` | Installed from upstream by `setup.sh` (not committed; see `.gitignore`). |

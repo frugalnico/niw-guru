@@ -4,10 +4,11 @@ A tiny, **fully fictional** example so you can see what niw-guru does without us
 
 - **`input/`** — a fake petitioner ("Dr. A. Researcher," grid-scale energy storage): `cv.md`,
   `publications.md`, `google_scholar.txt`. No real person; the papers don't exist.
-- **`output/`** — *illustrative* versions of the two main deliverables, hand-written to show the
-  format. They reference real U.S. programs (DOE Long-Duration Storage Shot, the IRA, the CET
-  list) but the **quote text is illustrative paraphrase, not verified verbatim** — a real run
-  downloads each source as a PDF and extracts exact quotes with located page numbers.
+- **`output/`** — *illustrative* versions of three deliverables (`national_importance_quotes.md`,
+  `future_endeavors.md`, and `partial_petition_letter_draft.md`), hand-written to show the format.
+  They reference real U.S. programs (DOE Long-Duration Storage Shot, the IRA, the CET list) but the
+  **quote text is illustrative paraphrase, not verified verbatim** — a real run downloads each
+  source as a PDF and extracts exact quotes with located page numbers.
 
 ## Run it yourself
 

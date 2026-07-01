@@ -40,6 +40,7 @@ That single command produces, in `output/<run-name>/`:
 | **`federal_documents/*.pdf`** | Every relevant U.S. government, White House, Congress, national-lab, and reputable-media source — **downloaded as PDF**. |
 | **`national_importance_quotes.md`** | **Exact quotes** from those PDFs, each with its **page location** and a written explanation of **how it connects to your background and proposed endeavor**. |
 | **`future_endeavors.md`** | **3–5 concrete future endeavors** with implementation plans (objective, approach, sub-aims, milestones), each aligned to **your expertise** *and* the **national interest**. |
+| **`partial_petition_letter_draft.md`** | The three above, woven into the **core of the petition letter**: your background → the national importance → **how each endeavor advances the specific evidence found** (Dhanasar Prongs 1–3). A partial draft, not a filing-ready letter. |
 | `RUN_SUMMARY.md` | What ran, what was found, and everything to verify before filing. |
 
 ## Contents
@@ -145,16 +146,17 @@ so it can take a while and uses your Claude Code session.
 ## How it works
 
 `bin/niw-guru` (built from [`src/niw-guru.in`](src/niw-guru.in)) is a thin launcher that drives
-the `claude` CLI through a five-stage pipeline
+the `claude` CLI through a six-stage pipeline
 ([`.claude/commands/niw-run.md`](.claude/commands/niw-run.md)), composed of skills:
 
 ```
-your materials ─▶ 1. Profile         (document-summary-arrangement)
-                  2. Source research  (niw-national-importance-research)
-                  3. Harvest + quote  (niw-federal-evidence-harvester)  ─▶ federal_documents/*.pdf
-                                                                           national_importance_quotes.md
-                  4. Future endeavors (niw-future-endeavors)            ─▶ future_endeavors.md
-                  5. Summary + gaps                                     ─▶ RUN_SUMMARY.md
+your materials ─▶ 1. Profile          (document-summary-arrangement)
+                  2. Source research   (niw-national-importance-research)
+                  3. Harvest + quote   (niw-federal-evidence-harvester)  ─▶ federal_documents/*.pdf
+                                                                            national_importance_quotes.md
+                  4. Future endeavors  (niw-future-endeavors)            ─▶ future_endeavors.md
+                  5. Petition letter   (synthesize 1–4)                  ─▶ partial_petition_letter_draft.md
+                  6. Summary + gaps                                      ─▶ RUN_SUMMARY.md
 ```
 
 [`niw-federal-evidence-harvester`](.claude/skills/niw-federal-evidence-harvester) and
@@ -171,7 +173,7 @@ petition letter), `/expert-letter-drafter` (recommendation letters), `/petition-
 
 ## Output
 
-Every run writes to `output/<run-name>/` — the three deliverables plus the intermediates
+Every run writes to `output/<run-name>/` — the four deliverables plus the intermediates
 (`petitioner_profile.md`, `evidence-index.md`, `national_importance_research.md`) and
 `RUN_SUMMARY.md`. Read `RUN_SUMMARY.md` first; it carries the consolidated `[VERIFY]` list.
 Full format reference: [`docs/output-format.md`](docs/output-format.md).

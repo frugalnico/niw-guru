@@ -6,6 +6,15 @@ All notable changes to niw-guru are documented here. The format is based on
 
 ## [Unreleased]
 
+### Added
+- **`partial_petition_letter_draft.md`** — a fourth deliverable produced by the same one command.
+  A new pipeline stage synthesizes the run's three existing outputs (`petitioner_profile.md`,
+  `national_importance_quotes.md`, `future_endeavors.md`) into the connective core of the petition
+  letter: background → national importance → how each proposed endeavor advances the specific
+  harvested evidence (Dhanasar Prongs 1–3). It introduces no new quote, page, or source, and
+  carries every `[VERIFY]` forward. Adds `templates/partial_petition_letter_draft.template.md`;
+  the orchestrator is now a six-stage pipeline.
+
 - See the [roadmap](README.md#roadmap).
 
 ## [0.1.0] - 2026-06-26

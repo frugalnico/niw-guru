@@ -38,7 +38,8 @@ can see the shape of a run without using real data:
 ```
 
 When it finishes, look in `/tmp/niw-smoke/<run-name>/` for `federal_documents/`,
-`national_importance_quotes.md`, `future_endeavors.md`, and `RUN_SUMMARY.md`. Compare them to
+`national_importance_quotes.md`, `future_endeavors.md`, `partial_petition_letter_draft.md`, and
+`RUN_SUMMARY.md`. Compare them to
 the pre-written illustrative versions in
 [`examples/sample-run/output/`](../examples/sample-run/output) to know what "good" looks like.
 
@@ -73,8 +74,9 @@ Your source folder is never modified.
 ## 4. After the run
 
 Open `RUN_SUMMARY.md` first — it lists what was downloaded, the proposed endeavors, and every
-`[VERIFY]` item to confirm before filing. Then read `national_importance_quotes.md` and
-`future_endeavors.md`.
+`[VERIFY]` item to confirm before filing. Then read `national_importance_quotes.md`,
+`future_endeavors.md`, and `partial_petition_letter_draft.md` (the petition-letter core that ties
+them together).
 
 To go further, open `claude` in the `niw-guru` folder and run the installed skills
 interactively, e.g. `/case-strength-assessor`, `/niw-petition-narrative`, `/petition-audit`.
