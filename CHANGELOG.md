@@ -6,6 +6,14 @@ All notable changes to niw-guru are documented here. The format is based on
 
 ## [Unreleased]
 
+### Fixed
+- Allow `--dry-run` without installing Claude Code; actual runs still require it.
+- Lint the launcher source in the independent CI ShellCheck job, which has no built launcher.
+
+### Tests
+- Add isolated launcher and quote-matching contracts using synthetic evidence and fake tools.
+  Four known safety/evidence bugs are explicit expected failures, with a strict mode for fixes.
+
 ### Added
 - **`partial_petition_letter_draft.md`** — a fourth deliverable produced by the same one command.
   A new pipeline stage synthesizes the run's three existing outputs (`petitioner_profile.md`,

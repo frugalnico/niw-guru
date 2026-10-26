@@ -95,6 +95,18 @@ else
 fi
 
 # ---------------------------------------------------------------------------
+section "Isolated launcher and known-defect regressions (Python 3)"
+if command -v python3 >/dev/null 2>&1; then
+  if python3 tests/test_regressions.py; then
+    pass "isolated regressions (known defects reported as expected failures)"
+  else
+    fail "isolated regressions"
+  fi
+else
+  fail "python3 is required for isolated regressions"
+fi
+
+# ---------------------------------------------------------------------------
 section "pdf-locate-quote.sh guards"
 if command -v pdftotext >/dev/null 2>&1; then
   out="$("$LOCATE" README.md "anything" 2>/dev/null)"
